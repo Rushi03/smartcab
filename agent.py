@@ -141,8 +141,9 @@ class LearningAgent(Agent):
 
         old_Qsa = self.Q[state][action]
 
-        self.Q[state][action] = (old_Qsa * (1 - self.alpha) + self.alpha *
-                                 reward)
+        if self.learning:
+            self.Q[state][action] = (old_Qsa * (1 - self.alpha) + self.alpha *
+                                     reward)
 
         return
 
