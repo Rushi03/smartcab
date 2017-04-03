@@ -11935,7 +11935,7 @@ div#notebook {
 </li>
 </ul>
 <p>The act function is called from the Environment class when the agent performs an action. It applies the rewards to the Smartcab according to it's performance and ability to follow the traffic laws.</p>
-<p>The difference between render_text() and render() functions are that the render_text() is the trial data text that is rendered at the top and the render() function renders the GUI with all of the simulation agents, changing of traffic lights, and etc.</p>
+<p>The difference between render_text() and render() functions are that the render_text() is the trial data text that is rendered at the top and renders to the terminal, and the render() function renders the GUI with all of the simulation agents, changing of traffic lights, and etc.</p>
 <p>The next_waypoint() function will consider the East-West direction first then North-South.</p>
 
 </div>
@@ -13168,7 +13168,7 @@ MjMzMzMzqxInWGZmZmZmZlXiBMvMzMzMzKxK/h89kbqv0s4A1wAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>The driving agent is making a lot of bad decisions. If you look at the relative frequency rate graph the relative frequency rate for bad decisions is high. The rewards per action graph also indicates the low amount of rewards received during the trials due to bad decisions. Due to the driving agent randomly driving, the rate of reliability from graph above does make sense. It isn't really that reliable because it isn't following the waypoint and making random decisions. The rewards suggest that the driving agent on average was more rewarded negatively due to bad decisions as mentioned earlier. As the trials increases, some of the outcomes seem to get slightly better like the major accidents and average reward per action. One area tended to stay the same during the increase in trials and that was the rate of reliability. The rest of the other areas after observing the graphs seem to be getting worse. This Smartcab would be considered unsafe and unreliable due to it's poor decision making and lack of ability to learn.</p>
+<p>The driving agent is making a lot of bad decisions. If you look at the relative frequency rate graph the relative frequency rate for bad decisions is high. The rewards per action graph also indicates the low amount of rewards received during the trials due to bad decisions. Due to the driving agent randomly driving, the rate of reliability from graph above does make sense. It isn't really that reliable because it isn't following the waypoint and making random decisions. The rewards suggest that the driving agent on average was more rewarded negatively due to bad decisions as mentioned earlier. As the trials increases, some of the outcomes seem to get slightly better like the major accidents and average reward per action. One area tended to stay the same during the increase in trials and that was the rate of reliability. The rest of the other areas after observing the graphs seem to be getting worse. It is explanable by the fact that the driving agent is still exploring and not learning. This Smartcab would be considered unsafe and unreliable due to it's poor decision making and lack of ability to learn.</p>
 
 </div>
 </div>
@@ -13221,7 +13221,7 @@ MjMzMzMzqxInWGZmZmZmZlXiBMvMzMzMzKxK/h89kbqv0s4A1wAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>Personally, I believe that all the features are relevent for learning both safety and efficiency. In order for the driving agent to be efficient, we need it to follow directions to it's destination, 'waypoint', in a certain number of actions before time runs out, 'deadline'. For safety, all of the 'inputs' would be needed because in order to make safe driving decisions the agent will need to know what the color of the light is and whether there is oncoming traffic for a turn. Unfortunately, we cannot carry all of these features for the policy. I would pick 'waypoint', inputs['light'], and inputs['oncoming'] because those are the main ones that would help the driving agent learn to properly follow the traffic laws. Other features like inputs['left'], inputs['right'], and deadline are either somewhat repetitive to a feature I chose or not useful to ensure that the the driving agent can learn anything from it.</p>
+<p>Personally, I believe that all the features are relevent for learning both safety and efficiency. In order for the driving agent to be efficient, we need it to follow directions to it's destination, 'waypoint', in a certain number of actions before time runs out, 'deadline'. For safety, all of the 'inputs' would be needed because in order to make safe driving decisions the agent will need to know what the color of the light is and whether there is oncoming traffic for a turn. Unfortunately, we cannot carry all of these features for the policy. I would pick 'waypoint', inputs['light'], and inputs['oncoming'] because those are the main ones that would help the driving agent learn to properly follow the traffic laws. Other features like inputs['left'], inputs['right'], and deadline were omitted due to keeping a small state space for the driving agent to be able to learn from within an infinite amount of training trials. Deadline was also omitted because deadline is more of a time by which the driving agent had to reach it's destination. If it was part of the representational state if could possibly lower the safety of the agent by making reckless decisions to reach it's destination in time. It would alse increase the load of work the driving agent would have to compute leading to increase in computing expenses.</p>
 
 </div>
 </div>
@@ -15994,10 +15994,6 @@ mZmZ1YgDLDMzMzMzsxpxgGVmZmZmZlYjDrDMzMzMzMxq5H8BIOIyIemkc+sAAAAASUVORK5CYII=
 States - ('waypoint', inputs['light'], inputs['oncoming'])
 Action - ('forward', 'right', 'left', 'None')</p>
 <ul>
-<li>('right', 'red', None)<ul>
-<li>None</li>
-</ul>
-</li>
 <li>('forward', 'green', 'right')<ul>
 <li>Forward</li>
 </ul>
@@ -16011,7 +16007,14 @@ Action - ('forward', 'right', 'left', 'None')</p>
 </ul>
 </li>
 </ul>
-<p>For each state in the simulation, the policy is correct; evident by the results in the text file. I do not see any states where the policy is different than from what would be expected from an optimal policy.</p>
+<p>For each state in the simulation, the policy is almost correct because there are some cases in which due to omitting some features the driving agent is not making some correct actions. I do see some states where the policy is different than from what would be expected from an optimal policy.</p>
+<ul>
+<li>('right', 'red', None)<ul>
+<li>None</li>
+</ul>
+</li>
+</ul>
+<p>On a red light, the agent needs to go right, but does nothing since it is not taking in the information of whether or not there is traffic coming from the left so it may or may not take a right turn on a red light. In real life, if there is no oncoming traffic from the left you may take a right turn on a red light.</p>
 <p>Simulation Example:</p>
 <ul>
 <li>('left', 'red', 'forward')<ul>
@@ -16054,7 +16057,7 @@ Action - ('forward', 'right', 'left', 'None')</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>Agent 'get_state' and Environment 'sense' functions are the two characteristics that would invalidate the use of future rewards because 'get_state' is only trying to get the current state of the driving agent and 'sense' is only sensing the current location of the driving agent. They do not have the need to know how beneficiary it is to go towards the biased  actions with high rewards instead of the destination. The use of future rewards is not useful in this project because if we follow biased actions instead of proper learned actions we will end up having violations, accidents, and bad actions.</p>
+<p>Agent 'get_state' and Environment 'sense' functions are the two characteristics that would invalidate the use of future rewards because 'get_state' is only trying to get the current state of the driving agent and 'sense' is only sensing the current location of the driving agent. They do not have the need to know how beneficiary it is to go towards the biased  actions with high rewards instead of the destination. The use of future rewards is not useful in this project because if we follow biased actions instead of proper learned actions we will end up having violations, accidents, and bad actions. In the function 'sense', you cannot envision what is going on the whole grid. You are only limited to your little section of the grid so you cannot be looking forward to moving around in a certain area to reap the big rewards especially when there are dummy agents constantly moving too. The destination changes with every training trial so without a set permenant destination you can't be able to work out a way to make biased decisions to get big rewards or try to avoid a desination if the rewards are better.</p>
 
 </div>
 </div>
